@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Shield, Plus, Save, X, Download } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Shield, Plus, Save, X, Download, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [showNewDay, setShowNewDay] = useState(false);
   const [newDayTitle, setNewDayTitle] = useState('');
   const [newDayLevel, setNewDayLevel] = useState<'Cơ bản' | 'Chuyên sâu' | 'Senior'>('Cơ bản');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAddDay = () => {
     if (newDayTitle.trim() === '') {
@@ -70,6 +71,48 @@ const Dashboard = () => {
     });
   };
 
+  const handleImportClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const importedData = JSON.parse(content);
+        
+        if (Array.isArray(importedData)) {
+          setDays(importedData);
+          toast({
+            title: "Nhập dữ liệu thành công",
+            description: `Đã nhập ${importedData.length} ngày học từ file JSON`,
+          });
+        } else {
+          throw new Error("Dữ liệu không đúng định dạng");
+        }
+      } catch (error) {
+        toast({
+          title: "Lỗi nhập dữ liệu",
+          description: "File JSON không đúng định dạng",
+          variant: "destructive",
+        });
+      }
+    };
+    
+    reader.readAsText(file);
+    
+    // Reset input để có thể chọn lại cùng một file
+    if (event.target) {
+      event.target.value = "";
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -81,6 +124,23 @@ const Dashboard = () => {
           </div>
           
           <div className="flex gap-2">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileImport}
+              accept=".json"
+              className="hidden"
+            />
+            
+            <Button 
+              variant="outline"
+              className="bg-cyber-medium hover:bg-cyber-light"
+              onClick={handleImportClick}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Nhập file JSON
+            </Button>
+            
             <Button 
               variant="outline"
               className="bg-cyber-medium hover:bg-cyber-light"
