@@ -2,59 +2,41 @@
 import React from 'react';
 import { Terminal, Server, Search, Shield, Box, BarChart, Target, Trophy } from 'lucide-react';
 import DayCard from './DayCard';
+import courseData from '@/data/courseData.json';
 
 const CourseContent = () => {
-  const days = [
-    {
-      day: 1,
-      title: "NETWORKING & OPERATING SYSTEM FUNDAMENTALS",
-      description: "Hiểu sâu về mô hình mạng, giao thức và lệnh hệ thống làm nền tảng cho phân tích sự cố.",
-      level: "basic" as const,
-      icon: <Terminal className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 2,
-      title: "LOGGING & SIEM (SPLUNK, ELK, QRADAR)",
-      description: "Nắm vững cách thu thập, lưu trữ và phân tích log để phát hiện sự kiện bất thường.",
-      level: "basic" as const,
-      icon: <Server className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 3,
-      title: "MALWARE ANALYSIS & THREAT HUNTING",
-      description: "Phát hiện, phân tích mã độc và áp dụng MITRE ATT&CK để săn mối đe dọa.",
-      level: "advanced" as const,
-      icon: <Search className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 4,
-      title: "INCIDENT RESPONSE & DIGITAL FORENSICS",
-      description: "Nắm quy trình phản ứng sự cố và áp dụng công cụ pháp y số để điều tra.",
-      level: "advanced" as const,
-      icon: <Shield className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 5,
-      title: "SOC OPERATIONS & AUTOMATION (SOAR)",
-      description: "Tích hợp và tự động hóa quy trình điều tra, nâng cao hiệu quả SOC.",
-      level: "senior" as const,
-      icon: <Box className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 6,
-      title: "RED TEAM VS BLUE TEAM & ADVERSARY SIMULATION",
-      description: "Hiểu chiến thuật tấn công của Red Team và phản ứng của Blue Team qua mô phỏng.",
-      level: "senior" as const,
-      icon: <Target className="h-5 w-5 text-cyber-accent" />,
-    },
-    {
-      day: 7,
-      title: "CAPTURE THE FLAG (CTF) & CASE STUDIES",
-      description: "Tích hợp kiến thức qua CTF và phân tích case study thực tế.",
-      level: "senior" as const,
-      icon: <Trophy className="h-5 w-5 text-cyber-accent" />,
-    },
-  ];
+  // Function to map level from JSON to component level format
+  const mapLevel = (level: string) => {
+    switch(level) {
+      case 'Cơ bản': return 'basic' as const;
+      case 'Chuyên sâu': return 'advanced' as const;
+      case 'Senior': return 'senior' as const;
+      default: return 'basic' as const;
+    }
+  };
+
+  // Function to get icon component based on icon name
+  const getIconComponent = (iconName: string) => {
+    switch(iconName) {
+      case 'Terminal': return <Terminal className="h-5 w-5 text-cyber-accent" />;
+      case 'Server': return <Server className="h-5 w-5 text-cyber-accent" />;
+      case 'Search': return <Search className="h-5 w-5 text-cyber-accent" />;
+      case 'Shield': return <Shield className="h-5 w-5 text-cyber-accent" />;
+      case 'Box': return <Box className="h-5 w-5 text-cyber-accent" />;
+      case 'Target': return <Target className="h-5 w-5 text-cyber-accent" />;
+      case 'Trophy': return <Trophy className="h-5 w-5 text-cyber-accent" />;
+      default: return <Terminal className="h-5 w-5 text-cyber-accent" />;
+    }
+  };
+
+  // Transform JSON data to the format needed by DayCard
+  const days = Object.entries(courseData).map(([dayNumber, dayData]) => ({
+    day: parseInt(dayNumber),
+    title: dayData.title,
+    description: dayData.objective,
+    level: mapLevel(dayData.level),
+    icon: getIconComponent(dayData.icon)
+  }));
 
   return (
     <div className="container mx-auto px-4 py-8">

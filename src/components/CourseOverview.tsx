@@ -4,8 +4,28 @@ import { Award, Terminal, Timer, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import courseData from '@/data/courseData.json';
 
 const CourseOverview = () => {
+  // Get all unique tools mentioned in the course data
+  const getAllTools = () => {
+    const toolsSet = new Set<string>();
+    
+    Object.values(courseData).forEach(day => {
+      day.theory.forEach(theory => {
+        const text = theory.text;
+        // Extract tool names and versions using regex
+        const toolMatches = text.match(/([A-Za-z0-9]+)(\s+\(v[0-9.]+\))/g);
+        if (toolMatches) {
+          toolMatches.forEach(tool => toolsSet.add(tool));
+        }
+      });
+    });
+    
+    // Convert set to array and take first 5 tools
+    return Array.from(toolsSet).slice(0, 5).join(', ');
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center max-w-3xl mx-auto mb-12">
@@ -53,7 +73,7 @@ const CourseOverview = () => {
               <div>
                 <h3 className="font-semibold mb-2">Công nghệ tiên tiến</h3>
                 <p className="text-muted-foreground text-sm">
-                  Sử dụng Splunk (v9.4.1), ELK (v8.17.3), Volatility (v3.2.1.0), Autopsy (v4.21.0), Cortex XSOAR (v8.9).
+                  Sử dụng {getAllTools()}.
                 </p>
               </div>
             </div>
