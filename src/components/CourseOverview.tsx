@@ -43,21 +43,7 @@ const CourseOverview = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-cyber-medium border-cyber-light">
-          <CardContent className="pt-6">
-            <div className="flex items-start">
-              <div className="bg-cyber-light p-3 rounded-md mr-3">
-                <Users className="h-5 w-5 text-cyber-accent" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Đào tạo tương tác</h3>
-                <p className="text-muted-foreground text-sm">
-                  Livestream, workshop và thảo luận nhóm giải đáp thắc mắc tức thì.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        
 
         
       </div>
