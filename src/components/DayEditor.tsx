@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PenSquare, Trash2, ChevronDown } from 'lucide-react';
+import { PenSquare, Trash2, ChevronDown, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -68,3 +68,4 @@ const DayEditor = () => {
 };
 
 export default DayEditor;
+

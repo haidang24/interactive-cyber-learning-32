@@ -1,9 +1,7 @@
-
 import React from 'react';
-import { Shield, PenSquare, Trash2, Plus } from 'lucide-react';
+import { Shield, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DayEditor } from '@/components/DayEditor';
+import DayEditor from '@/components/DayEditor';
 import Header from '@/components/Header';
 
 const Dashboard = () => {
