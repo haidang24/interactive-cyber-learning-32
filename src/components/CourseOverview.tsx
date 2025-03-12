@@ -1,13 +1,10 @@
-
 import React from 'react';
 import { Award, Terminal, Timer, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-
 const CourseOverview = () => {
-  return (
-    <div className="container mx-auto px-4 py-12">
+  return <div className="container mx-auto px-4 py-12">
       <div className="text-center max-w-3xl mx-auto mb-12">
         <h1 className="font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
           SOC Masterclass
@@ -28,21 +25,7 @@ const CourseOverview = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <Card className="bg-cyber-medium border-cyber-light">
-          <CardContent className="pt-6">
-            <div className="flex items-start">
-              <div className="bg-cyber-light p-3 rounded-md mr-3">
-                <Terminal className="h-5 w-5 text-cyber-accent" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Thực hành thực tế</h3>
-                <p className="text-muted-foreground text-sm">
-                  Mỗi bài lab mô phỏng tình huống trong SOC doanh nghiệp lớn, giúp học viên trải nghiệm công việc thực tế.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        
 
         <Card className="bg-cyber-medium border-cyber-light">
           <CardContent className="pt-6">
@@ -76,24 +59,8 @@ const CourseOverview = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-cyber-medium border-cyber-light">
-          <CardContent className="pt-6">
-            <div className="flex items-start">
-              <div className="bg-cyber-light p-3 rounded-md mr-3">
-                <Timer className="h-5 w-5 text-cyber-accent" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Chứng chỉ SOC Masterclass</h3>
-                <p className="text-muted-foreground text-sm">
-                  Minh chứng năng lực, mở rộng cơ hội nghề nghiệp trong Blue Team.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CourseOverview;

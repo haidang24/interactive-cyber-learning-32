@@ -1,15 +1,12 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Terminal } from 'lucide-react';
-
 const Header = () => {
-  return (
-    <header className="bg-cyber-medium border-b border-cyber-light">
+  return <header className="bg-cyber-medium border-b border-cyber-light">
       <div className="container mx-auto py-4 px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
           <Shield className="h-8 w-8 text-cyber-accent" />
-          <span className="text-xl font-bold">SOC Masterclass</span>
+          <span className="text-xl font-bold">SOC Roadmap </span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-foreground hover:text-cyber-accent transition-colors">
@@ -31,8 +28,6 @@ const Header = () => {
           </button>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
