@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for our cybersecurity theme
+				cyber: {
+					dark: '#0f172a',    // Dark blue background
+					medium: '#1e293b',  // Medium blue for cards
+					light: '#334155',   // Light blue for accents
+					accent: '#06b6d4',  // Cyan accent for highlights
+					accentLight: '#22d3ee', // Light cyan for hover states
+					success: '#10b981', // Green for success indicators
+					warning: '#f59e0b', // Amber for warnings
+					danger: '#ef4444',  // Red for danger/errors
 				}
 			},
 			borderRadius: {
@@ -84,11 +96,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'slide-in': {
+					'0%': { transform: 'translateY(10px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-in': 'slide-in 0.3s ease-out'
 			}
 		}
 	},
